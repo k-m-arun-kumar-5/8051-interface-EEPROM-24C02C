@@ -1,19 +1,11 @@
 Description :
 =============
-I just shared my works, which I worked as learning path and practiced Embedded C programming using AT89C51 (a 8051-based 8 bit CMOS controller) for interface of LED & Switch, UART, Timer, some Interrupt and implementation of a simple Embedded Operating System. Other features are not implemented. 
+I just shared my works, which I worked as learning path and practiced Embedded C programming using AT89C51 (a 8051-based 8 bit CMOS controller) such as interface External EEPROM using I2C.
 
 Purpose :
 =========
-In all my respective repositories, I just shared my works that I worked as the learning path and practiced, with designed, developed, implemented, simulated and tested, including some projects, assignments, documentations and all other related files and some programming that might not being implement, not being completed, lacks some features or have some bugs. Purpose of all my repositories, if used, can be used for learning and educational purpose only. It can be used as the open source and freeware. Kindly read the LICENSE.txt for license, terms and conditions about the use of source codes, binaries, documentation and all other files, located in all my repositories. 
+In all my respective repositories, I just shared my works that I worked as the learning path and practiced, with designed, developed, implemented, simulated and tested, including some projects, assignments, documentations and all other related files and some programming that might not being implement, not being completed, lacks some features or have some bugs. Purpose of all my repositories, if used, can be used for LEARNING AND EDUCATIONAL PURPOSE only. It can be used as the open source and freeware. Kindly read the LICENSE.txt for license, terms and conditions about the use of source codes, binaries, documentation and all other files, located in all my repositories. 
 
-Autography :
-============
-I, K.M. Arun Kumar alias Arunkumar Murugeswaran, in the year 2003, graduated (B.E. in Electronics and Instrumentation Engineering (EIE) at Government College of Technology (GCT), Coimbatore, India), was a C developer, with 2 years of work experience (2003-2005) at a company, based in Chennai, India, as a network programmer (using C programming language), in a role of Software engineer in Design & Development Team, in domain of Remote Access Server (RAS) in module of Point to Point Protocol (PPP), Telnet and SS7. I resigned from that company, due to work stress that I was unable to bear, which affected my health and then treatment given by a doctor, which was not suitable for my health, worsen my health. After a rehabitation process in my health, thanks to my mother, sister and family, healthcare, myself, god and all those who directly or indirectly help and/or support me and my family, which helped me to recover my health. I again practiced and refresh C programming.
- 
-I have a career break from 2005 - 2023, in 2018-2019, I also learned some Embedded C Programmming using AT89C51, PIC16F887, PIC18F4680 and LPC2138 to practice Embedded C programmming and searched for the job. But in vain, mainly due to my career break and my age. 
-
-I just shared my works that I used as the learning path and practiced, with designed, developed, implemented, simulated and tested, including some projects, assignments, documentations and all other related files. 
-  
 My Thanks and Tribute :
 ========================
 I thank to my family, Friends, Teachers, People behind the toolchains and references that I used, all those who directly or indirectly supported me and/or helped me and/or my family, Nature and God. My tribute to my family, Friends, Teachers, People behind the toolchains and references that I used, Nature, Jimmy Dog, God and all those, who directly or indirectly help and/or support me and/or my family.
@@ -32,7 +24,6 @@ Some reference that I refered for AT89C51 Application design and development, ar
 3: Embedded C - Book authored by Michael J. Pont.
 4: AT89C51 product datasheet
 5: https://www.electronicwings.com/8051/inside  - 8051
-
 
 Note :
 ======
