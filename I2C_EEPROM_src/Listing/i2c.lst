@@ -1,0 +1,227 @@
+C51 COMPILER V9.60.0.0   I2C                                                               03/11/2023 20:51:27 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\Objects\i2c.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE i2c.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\i2c.l
+                    -st) TABS(2) OBJECT(.\Objects\i2c.obj)
+
+line level    source
+
+   1          /**************************************************************************
+   2             FILE          :    i2c.c
+   3           
+   4             PURPOSE       :   I2C Library
+   5           
+   6             AUTHOR        :    K.M. Arun Kumar alias Arunkumar Murugeswaran 
+   7           
+   8            KNOWN BUGS     :
+   9            
+  10            NOTE           :   
+  11            
+  12            CHANGE LOGS    :
+  13               
+  14           **************************************************************************/
+  15          #include "main.h"
+  16          
+  17          
+  18          /*------------------------------------------------------------*
+  19          FUNCTION NAME  : 
+  20          
+  21          DESCRIPTION    : 
+  22                          
+  23          INPUT          : none
+  24          
+  25          OUTPUT         : 
+  26          
+  27          NOTE           : 
+  28          
+  29          Func ID        : 21   
+  30          -*------------------------------------------------------------*/
+  31          void I2C_Sent_Start(void)
+  32          {
+  33   1          SDA = 1;
+  34   1        SCL = 1;
+  35   1        _nop_(); _nop_();
+  36   1        SDA = 0;
+  37   1        _nop_();_nop_();
+  38   1        SCL = 0;
+  39   1        _nop_();_nop_();    
+  40   1      }
+  41            
+  42          /*------------------------------------------------------------*
+  43          FUNCTION NAME  : 
+  44          
+  45          DESCRIPTION    :
+  46                          
+  47          INPUT          : none
+  48          
+  49          OUTPUT         : 
+  50          
+  51          NOTE           : 
+  52          
+  53          Func ID        : 21   
+  54          -*------------------------------------------------------------*/
+C51 COMPILER V9.60.0.0   I2C                                                               03/11/2023 20:51:27 PAGE 2   
+
+  55          void I2C_Sent_Stop(void)
+  56          {
+  57   1        SDA = 0;        
+  58   1        _nop_();_nop_();
+  59   1        SCL = 1;
+  60   1        _nop_();_nop_();
+  61   1        SDA = 1;  
+  62   1      }
+  63          
+  64          /*------------------------------------------------------------*
+  65          FUNCTION NAME  : 
+  66          
+  67          DESCRIPTION    :
+  68                          
+  69          INPUT          : none
+  70          
+  71          OUTPUT         : 
+  72          
+  73          NOTE           : 
+  74          
+  75          Func ID        : 21   
+  76          -*------------------------------------------------------------*/
+  77          // Function Purpose: I2C_ReStart sends start bit sequence
+  78          void I2C_Sent_Restart(void)
+  79          {
+  80   1        
+  81   1        SDA = 1;        
+  82   1        _nop_();_nop_();
+  83   1        SCL = 1;
+  84   1        _nop_();_nop_();
+  85   1        SDA = 0;
+  86   1              _nop_(); _nop_();
+  87   1              SCL = 0;
+  88   1        _nop_(); _nop_();
+  89   1      }
+  90          
+  91          /*------------------------------------------------------------*
+  92          FUNCTION NAME  : 
+  93          
+  94          DESCRIPTION    :
+  95                          
+  96          INPUT          : none
+  97          
+  98          OUTPUT         : 
+  99          
+ 100          NOTE           : 
+ 101          
+ 102          Func ID        : 21   
+ 103          -*------------------------------------------------------------*/
+ 104          bit I2C_Send_Dev_Addr(unsigned char Dev_Addr, bit r_w_flag)
+ 105          {    
+ 106   1         unsigned int i;
+ 107   1         unsigned char Data = Dev_Addr;
+ 108   1         bit ack_flag = ACK;
+ 109   1         
+ 110   1         if(r_w_flag == I2C_READ)
+ 111   1            Data  |= 0x01;   
+ 112   1         for (i=0;i<8;i++)
+ 113   1         {
+ 114   2           SDA = (Data & 0x80) ? 1 : 0;
+ 115   2           SCL=1; 
+ 116   2             Data<<=1;
+C51 COMPILER V9.60.0.0   I2C                                                               03/11/2023 20:51:27 PAGE 3   
+
+ 117   2             SCL =0;     
+ 118   2         }
+ 119   1         while(SDA != 0);
+ 120   1         SCL = 1; 
+ 121   1         _nop_(); _nop_();
+ 122   1         SCL = 0;   
+ 123   1         _nop_(); _nop_();
+ 124   1         return SDA;    
+ 125   1      }
+ 126          
+ 127          /*------------------------------------------------------------*
+ 128          FUNCTION NAME  : 
+ 129          
+ 130          DESCRIPTION    :
+ 131                          
+ 132          INPUT          : none
+ 133          
+ 134          OUTPUT         : 
+ 135          
+ 136          NOTE           : 
+ 137          
+ 138          Func ID        : 21   
+ 139          -*------------------------------------------------------------*/
+ 140          bit I2C_Write(unsigned char Data)
+ 141          {    
+ 142   1         unsigned int i;
+ 143   1         bit ack_flag = ACK;
+ 144   1      
+ 145   1         for (i=0;i<8;i++)
+ 146   1         {
+ 147   2               SDA = (Data & 0x80) ? 1 : 0;
+ 148   2             SCL=1;
+ 149   2               Data<<=1;  
+ 150   2           SCL =0;
+ 151   2         }
+ 152   1         while(SDA != 0);
+ 153   1         SCL = 1; 
+ 154   1        _nop_();_nop_();
+ 155   1         SCL = 0;   
+ 156   1         _nop_(); _nop_();
+ 157   1         return SDA;   
+ 158   1      }
+ 159          
+ 160          /*------------------------------------------------------------*
+ 161          FUNCTION NAME  : 
+ 162          
+ 163          DESCRIPTION    :
+ 164                          
+ 165          INPUT          : none
+ 166          
+ 167          OUTPUT         : 
+ 168          
+ 169          NOTE           : 
+ 170          
+ 171          Func ID        : 21   
+ 172          -*------------------------------------------------------------*/
+ 173          unsigned char I2C_Read(const bit ACK_Bit)
+ 174          {
+ 175   1          unsigned char Data = 0x00; 
+ 176   1        unsigned int i;
+ 177   1        
+ 178   1        SDA = 1;  
+C51 COMPILER V9.60.0.0   I2C                                                               03/11/2023 20:51:27 PAGE 4   
+
+ 179   1        for (i=0;i<8;i++)
+ 180   1        {
+ 181   2          SCL   = 1;    
+ 182   2          Data<<= 1;
+ 183   2          Data  = (Data | SDA);   
+ 184   2          SCL   = 0;
+ 185   2          _nop_();
+ 186   2        }
+ 187   1          SDA = ACK_Bit; // Send ACK  
+ 188   1        _nop_();_nop_();
+ 189   1        SCL = 1;    
+ 190   1        _nop_();_nop_();
+ 191   1        SCL = 0;
+ 192   1          return Data;
+ 193   1      }
+ 194          
+ 195           /*------------------------------------------------------------------*-
+ 196            ------------------------ END OF FILE ------------------------------
+ 197          -*------------------------------------------------------------------*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    190    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       4
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

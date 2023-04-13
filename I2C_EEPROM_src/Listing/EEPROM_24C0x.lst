@@ -1,0 +1,205 @@
+C51 COMPILER V9.60.0.0   EEPROM_24C0X                                                      03/11/2023 20:51:27 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EEPROM_24C0X
+OBJECT MODULE PLACED IN .\Objects\EEPROM_24C0x.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE EEPROM_24C0x.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
+                    -ngs\EEPROM_24C0x.lst) TABS(2) OBJECT(.\Objects\EEPROM_24C0x.obj)
+
+line level    source
+
+   1          /* ********************************************************************
+   2             FILE                   : EEPROM_24C0x.c
+   3          
+   4             PROGRAM DESCRIPTION    : 
+   5                                                   
+   6             
+   7             AUTHOR                :  K.M. Arun Kumar alias Arunkumar Murugeswaran 
+   8             
+   9             KNOWN BUGS            : 
+  10          
+  11             NOTE                  :                      
+  12                                              
+  13             CHANGE LOGS           : 
+  14          
+  15          *****************************************************************************/
+  16          #include "main.h"
+  17          
+  18           i2c_datas_t i2c_datas;
+  19          /*------------------------------------------------------------*
+  20          FUNCTION NAME  : I2C_Write_EEPROM_24C02
+  21          
+  22          DESCRIPTION    :
+  23                          
+  24          INPUT          : none
+  25          
+  26          OUTPUT         : 
+  27          
+  28          NOTE           : 
+  29          
+  30          Func ID        : 21   
+  31          -*------------------------------------------------------------*/
+  32          void I2C_Write_EEPROM_24C02_Byte(const unsigned long int data_addr, unsigned char tx_char)
+  33          {    
+  34   1          bit ack_flag = NO_ACK;
+  35   1         
+  36   1            I2C_Sent_Start();
+  37   1            i2c_datas.i2c_flag_status.i2c_state = I2C_START;
+  38   1            I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_WRITE);
+  39   1            i2c_datas.i2c_flag_status.i2c_state = I2C_ADDR;
+  40   1              I2C_Write((unsigned char)( data_addr >> 8) & 0xFF); // send address high
+  41   1             I2C_Write((unsigned char) data_addr & 0xFF);   // send address low
+  42   1            i2c_datas.i2c_flag_status.i2c_state = I2C_WRITE_SEQ;
+  43   1               i2c_datas.i2c_num_data_chars_transmitted = strlen(i2c_datas.i2c_tx_data_str); 
+  44   1            ack_flag = I2C_Write(tx_char);                        
+  45   1           
+  46   1            i2c_datas.i2c_flag_status.i2c_state = I2C_STOP;
+  47   1            I2C_Sent_Stop();
+  48   1            i2c_datas.i2c_flag_status.i2c_state = I2C_IDLE;   
+  49   1      }
+  50          
+  51          /*------------------------------------------------------------*
+  52          FUNCTION NAME  : I2C_Read_EEPROM_24C02
+  53          
+  54          DESCRIPTION    :
+C51 COMPILER V9.60.0.0   EEPROM_24C0X                                                      03/11/2023 20:51:27 PAGE 2   
+
+  55                          
+  56          INPUT          : none
+  57          
+  58          OUTPUT         : 
+  59          
+  60          NOTE           : 
+  61          
+  62          Func ID        : 21   
+  63          -*------------------------------------------------------------*/
+  64          unsigned char I2C_Read_EEPROM_24C02_Byte(const unsigned long int data_addr)
+  65          {    
+  66   1          char rcvd_data;
+  67   1         bit ack_flag = NO_ACK;
+  68   1         
+  69   1           I2C_Sent_Start();
+  70   1         i2c_datas.i2c_flag_status.i2c_state = I2C_START;
+  71   1         ack_flag = I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_WRITE);
+  72   1         ack_flag = I2C_Write((unsigned char)(data_addr >> 8) & 0xFF);  // send address high
+  73   1         ack_flag = I2C_Write((unsigned char) data_addr & 0xFF);    // send address low
+  74   1         I2C_Sent_Start();
+  75   1         I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_READ);
+  76   1         rcvd_data = I2C_Read(NO_ACK);
+  77   1         i2c_datas.i2c_flag_status.i2c_state = I2C_STOP;
+  78   1         I2C_Sent_Stop();
+  79   1         i2c_datas.i2c_flag_status.i2c_state = I2C_IDLE;  
+  80   1           return rcvd_data;   
+  81   1      }
+  82          
+  83          /*------------------------------------------------------------*
+  84          FUNCTION NAME  : I2C_Send_Str
+  85          
+  86          DESCRIPTION    :
+  87                          
+  88          INPUT          : none
+  89          
+  90          OUTPUT         : 
+  91          
+  92          NOTE           : 
+  93          
+  94          Func ID        : 21   
+  95          -*------------------------------------------------------------*/
+  96          void I2C_Send_Str(const unsigned char addr, const unsigned char *str)
+  97          {
+  98   1        I2C_Sent_Start();
+  99   1        I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_WRITE);
+ 100   1        I2C_Write(addr);
+ 101   1        while(*str)
+ 102   1        {
+ 103   2           I2C_Write(*str++);
+ 104   2        }
+ 105   1        I2C_Sent_Stop();
+ 106   1      }
+ 107          
+ 108          /*------------------------------------------------------------*
+ 109          FUNCTION NAME  : I2C_Send_Str
+ 110          
+ 111          DESCRIPTION    :
+ 112                          
+ 113          INPUT          : none
+ 114          
+ 115          OUTPUT         : 
+ 116          
+C51 COMPILER V9.60.0.0   EEPROM_24C0X                                                      03/11/2023 20:51:27 PAGE 3   
+
+ 117          NOTE           : 
+ 118          
+ 119          Func ID        : 21   
+ 120          -*------------------------------------------------------------*/
+ 121          void I2C_Read_Str(unsigned char data_addr)
+ 122          {
+ 123   1        unsigned char i, j, rcvd_char;
+ 124   1        bit ack_flag;
+ 125   1        
+ 126   1        I2C_Sent_Start();
+ 127   1        ack_flag = I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_WRITE);
+ 128   1        ack_flag = I2C_Write((unsigned char)(data_addr >> 8) & 0xFF); // send address high
+ 129   1        ack_flag = I2C_Write((unsigned char) data_addr & 0xFF);   // send address low
+ 130   1        for(i=0, j =0; i < 10; i++)
+ 131   1        {
+ 132   2          I2C_Sent_Start();
+ 133   2            I2C_Send_Dev_Addr(I2C_24C02_EEPROM_DEV_ADDR, I2C_READ); 
+ 134   2            rcvd_char = I2C_Read(NO_ACK);
+ 135   2          if(rcvd_char != INVALID_I2C_OPER_CHAR)
+ 136   2          {
+ 137   3            i2c_datas.i2c_rcvd_data_str[j++] = rcvd_char;
+ 138   3          }     
+ 139   2            I2C_Sent_Stop();    
+ 140   2        } 
+ 141   1        i2c_datas.i2c_rcvd_data_str[j] = NULL_CHAR;
+ 142   1        return;
+ 143   1      }
+ 144          /*------------------------------------------------------------*
+ 145          FUNCTION NAME  : 
+ 146          
+ 147          DESCRIPTION    :
+ 148                          
+ 149          INPUT          : none
+ 150          
+ 151          OUTPUT         : 
+ 152          
+ 153          NOTE           : 
+ 154          
+ 155          Func ID        : 32   
+ 156          -*------------------------------------------------------------*/
+ 157           void Reset_Transfer_Parameters()
+ 158          {
+ 159   1        i2c_datas.i2c_error_status_type = I2C_NO_ERROR;
+ 160   1        i2c_datas.i2c_num_data_chars_received = 0;
+ 161   1        memset(i2c_datas.i2c_rcvd_data_str, NULL_CHAR, MAX_COMM_NUM_CHARS + 1);
+ 162   1        i2c_datas.i2c_flag_status.is_rcvd_end_data_char_flag = STATE_NO;
+ 163   1        i2c_datas.i2c_flag_status.is_rcvd_data_terminator_flag = STATE_NO;
+ 164   1        
+ 165   1        i2c_datas.i2c_flag_status.is_tx_data_terminator_flag = STATE_NO; 
+ 166   1        i2c_datas.i2c_num_data_chars_transmitted = 0;
+ 167   1        memset(i2c_datas.i2c_tx_data_str, NULL_CHAR, MAX_COMM_NUM_CHARS + 1); 
+ 168   1        i2c_datas.i2c_flag_status.is_tx_end_data_char_flag = STATE_NO;
+ 169   1        i2c_datas.i2c_flag_status.i2c_state = I2C_IDLE;
+ 170   1      } 
+ 171          
+ 172          
+ 173           /*------------------------------------------------------------------*-
+ 174            ------------------------ END OF FILE ------------------------------
+ 175          -*------------------------------------------------------------------*/
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+C51 COMPILER V9.60.0.0   EEPROM_24C0X                                                      03/11/2023 20:51:27 PAGE 4   
+
+   CODE SIZE        =    404    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     47      17
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       3
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
