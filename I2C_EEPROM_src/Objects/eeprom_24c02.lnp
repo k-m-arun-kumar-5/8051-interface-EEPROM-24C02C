@@ -1,0 +1,7 @@
+".\Objects\STARTUP.obj",
+".\Objects\EEPROM_24C0x.obj",
+".\Objects\i2c.obj",
+".\Objects\main.obj",
+".\Objects\uart.obj" 
+TO ".\Objects\eeprom_24c02" 
+PRINT(".\Listings\eeprom_24c02.m51")
