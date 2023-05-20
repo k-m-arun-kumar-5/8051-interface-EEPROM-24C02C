@@ -1,6 +1,6 @@
 Description :
 =============
-I just shared my works, which I worked as learning path and practiced Embedded C programming using AT89C51 (a 8051-based 8 bit CMOS controller) such as interface External EEPROM using I2C.
+I just shared my works, which I worked as learning path and practiced Embedded C programming using AT89C51 (a 8051-based 8 bit CMOS controller) such as interface External EEPROM (24C02) using I2C.
 
 Purpose :
 =========
